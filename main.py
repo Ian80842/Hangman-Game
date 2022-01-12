@@ -24,24 +24,10 @@ while run:
     if guess in abc:
         
         # Check to see if the player's guess is in the chosen word
-        if guess in chosen_word:
-            i = 0
-        for letter in chosen_word:
-            i += 1
-            if letter == guess:
-                underscores[i - 1] = guess
-
-        else:
-            num_wrong += 1
-            guesses_left = 10 - num_wrong
-            print("You have " + str(guesses_left) + " guesses left")
-
-
-        let_in_alpha_num = -1
-        for let in abc:
-            let_in_alpha_num += 1
-            if let == guess:
-                abc.pop(let_in_alpha_num)
+        modified_conditions = check_letter(guess, chosen_word, num_wrong, underscores, abc)
+        num_wrong = modified_conditions[0]
+        underscores = modified_conditions[1]
+        abc = modified_conditions[2]
 
         # Display the correct letters they have
         for lett in underscores:
@@ -52,10 +38,12 @@ while run:
         run = check_win_condition(underscores, alphabet, word_length, num_wrong, max_guesses, chosen_word, run)
         
         # Give them a hint after 5 wrong guesses
-        give_hint(num_wrong, underscores, chosen_word)
+        give_hint(num_wrong, underscores, chosen_word, run)
 
         # Show how much of the alphabet they have left
-        print_options(abc)
+        for a in abc:
+            print(a + ", ", end="", flush=True)
+        print("\n")
         
     else:
         print("invalid input")
